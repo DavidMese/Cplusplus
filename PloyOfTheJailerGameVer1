@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+using namespace std;
+
+int main() {
+    cout << endl;
+    cout << "Win Your Freedom! The jailer has offered you a chance to leave prison if you win his game." << endl;
+    cout << "The rules are simple, play the game accordingly and you are free:" << endl;
+    cout << "1) There are 20 sequential spots to move through, starting at 0 until 20" << endl;
+    cout << "2) The jailer will place one silver coin"<< endl;
+    cout << "3) You are given two gold coins from the jailer and must place them as well" << endl;
+    cout << "4) You will move according to a six-sided dice"<< endl;
+    cout << "5) You have won your freedom if you land on either gold coin, if the silver you shall remain in prison" << endl;
+    cout << "When ready, follow the game prompts." << endl;
+    cout << endl;
+
+    srand(time(0));
+    int silver = (rand()% 20 + 1);
+    int gold1;
+    int gold2;
+    int space = 0;
+    int count = 1;
+
+    cout << "The Jailer placed his silver on space: " << silver << ". Do not place your coins here!" << endl;
+    cout << "Please choose a space for your first coin" << endl;
+    cin >> gold1;
+    cout << "Please choose a space for your second coin" << endl;
+    cin >> gold2;
+    cout << endl;
+    cout << "The jailer's silver coin is on space: " << silver << endl;
+    cout << "Your first gold coin is on space: " << gold1 << endl;
+    cout << "Your second gold coin is on space: " << gold2 << endl;
+    cout << endl;
+
+    do {
+        space += (rand() % 6 + 1);
+        if (space > 20) {space = space % 20;}
+        cout << space << endl;
+        if (space == gold1 || space == gold2 || space == silver) {break;}
+        count ++;
+    }
+    while (((space != gold1) || (space != gold2) || (space != silver)) && space <= 20);
+
+    cout << "You took " << count << " moves." << endl;
+    if (space == gold1 || space == gold2) {cout << "You landed on one of your gold coins!. You are free!" << endl;}
+    if (space == silver) {cout << "You landed on the jailer's silver coin. No freedom! Off to the dragon!" << endl;}
+
+    return 0;
+}
