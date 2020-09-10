@@ -1,0 +1,117 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <string>
+using namespace std;
+
+int main() {
+    cout << endl;
+    cout << "Greetings National Mountain Rangers!" << endl;
+    cout << "We at Commandbase stress, THIS IS A CATEGORY 5 EMERGENCY!" << endl;
+    cout << endl;
+    cout << "A group of four travelers have gotten lost on their expeditions through the ski slopes." << endl;
+    cout << "Your team will be heli-dropped on the mountain's summit and given a Ranger's tool kit along with this command module." << endl;
+    cout << "The mission is to locate the lost group, but be warned: this is the worst winter we have experienced in 15 years." << endl;
+    cout << endl;
+    cout << "You have just landed on the mountain summit drop zone, marked with a Black Star." << endl;
+    cout << "Place your position marker (the white cap) on the Black Star on the map." << endl;
+    cout << "As you solve each puzzle, Commandbase will return instructions on what buttons to push on the GPS." << endl;
+    cout << "When you press the correct set of buttons, the GPS will give you instructions on where to move your position marker." << endl;
+    cout << "Move your position marker according to the instructions. You will land on a symbol. " << endl;
+    cout << "Complete each puzzle corresponding with the symbol your position marker is located on." << endl;
+    cout << endl;
+    cout << "Before you can begin the puzzle marked with the black star, you must configure the GPS! Good luck, rangers!" << endl;
+    cout << "Configure the system and input confirmation." << endl;
+    cout << "Enter G.P.S. configuration confirmation that appears on the screen. It should be in all CAPS!" << endl;
+    string gpsconfirm;
+    string answer1 = "GPS.START";
+    do {
+        cin >> gpsconfirm;
+        if (gpsconfirm == "hint1") {cout << "Commandbase has included a schematic for the G.P.S." << endl; continue;}
+        if (gpsconfirm == "hint2") {cout << "Wire up the G.P.S. according to the schematic and await the first message displayed." << endl; continue;}
+        if (gpsconfirm == "solution") {cout << "The confirmation is: GPS.START" << endl; continue;}
+        if (gpsconfirm != answer1) {cout << "Incorrect" << endl;}
+    }
+    while (gpsconfirm != answer1);
+    cout << endl;
+    cout << "G.P.S. System has been configured." << endl;
+    cout << "Notify command by entering 'Arrived'." << endl;
+    string arrival1;
+    string arrival1a = "Arrived";
+    do {
+        cin >> arrival1;
+    }
+    while (arrival1 != arrival1a);
+    cout << endl;
+    cout << "According to our algorithm, we believe that this site was where the group of skiers first went off trail." << endl;
+    cout << "This area is known to have a prominent wildlife activity." << endl;
+    cout << "We believe that the skiers travelled in a precise path." << endl;
+    cout << "Remember to use materials marked with the symbol of the position marker's current location!" << endl;
+    string pathpattern;
+    string answer2 = "5";
+    do {
+        cin >> pathpattern;
+        if (pathpattern == "hint1") {cout << "For this puzzle, you will need the animal tracks sheet and the expo marker." << endl;
+            cout << "Lost on where to start? Begin at the black star in the corner. Look for the human footprints!" << endl;
+            continue;}
+        if (pathpattern == "hint2") {cout << "Follow the pattern left by the human footprints, in the correctly oriented direction." << endl;
+            cout << "There may be many footprints in the area, but only some form a path with others." << endl; continue;}
+        if (pathpattern == "hint3") {cout << "Draw a path between footprints that are pointed toward one another. What single digit number does this path look like?" << endl; continue;}
+        if (pathpattern == "solution") {cout << "The path that the group travelled along creates the number ‘5’. Input ‘5’ to solve the puzzle." << endl; continue;}
+        if (pathpattern != answer2) {cout << "Incorrect" << endl;}
+    }
+    while (pathpattern != answer2);
+    cout << endl;
+    cout << "Great work Rangers! The skiers traveled along a pattern that created the number 5." << endl;
+    cout << "To proceed to the first site press the yellow button, then the blue button, and finally green into the G.P.S. Move the position marker accordingly." << endl;
+    cout << "When arrived at the second location, notify Command by entering 'Arrived'." << endl;
+    string arrival2;
+    string arrival2a = "Arrived";
+    do {
+        cin >> arrival2;
+    }
+    while (arrival2 != arrival2a);
+    cout << endl;
+    cout << "We believe that the lost group went along an old ski trail." << endl;
+    cout << "The group might have followed this broken trail sign. What trail, on the trail map, did the group follow? Your answer should be in all CAPS!" << endl;
+    cout << "Remember to use the materials marked with the symbol of the location your position marker is currently located on!" << endl;
+    cout << "NOTE: if you are unable to solve the trail sign jigsaw puzzle, use 'hint3' for assistance." << endl;
+    string oldtrial;
+    string answer3 = "WOLF";
+    do {
+        cin >> oldtrial;
+        if (oldtrial == "hint1") {cout << "Old things often break, but it's possible to put them back together." << endl;
+            cout << "For this puzzle, you will need the broken trail sign puzzle (the black border is included to help you organize the puzzle), the ‘Trail Index’ page of the field guide, and the trail map." << endl; continue;}
+        if (oldtrial == "hint2") {cout << "Take a close look at the completed trail sign puzzle. Which ski trail is the arrow pointed at?" << endl; continue;}
+        if (oldtrial == "hint3") {cout << "Some trail names can also be read backwards. Can you find the reverse of it on the trail map?" << endl << "If you could not solve the jigsaw puzzle: which trail in the Trail Guide is the odd one out? Find that trail and apply the backwards hint!" << endl; continue;}
+        if (oldtrial == "solution") {cout << "The trail that the group followed is: WOLF" << endl; continue;}
+        if (oldtrial != answer3) {cout << "Incorrect" << endl;}
+    }
+    while (oldtrial != answer3);
+    cout << endl;
+    cout << "Keep up the great work Rangers! We believe the group followed along the FLOW trail, renamed WOLF." << endl;
+    cout << "Enter the green button, then blue button, then finally the green button into the G.P.S to proceed to the second site. Move the position marker accordingly." << endl;
+    cout << "It seems that your team has triangulated in on the groups' location!" << endl;
+    cout << "Rangers, where are the lost skiers located? Enter your answer in all lowercase and omit spaces. Retrace your steps!" << endl;
+    cout << "Your answer should be there 'color' then 'shape'  that you triangulate." << endl;
+
+    string final;
+    string answer4 = "bluetriangle";
+    do {
+        cin >> final;
+        if (final == "hint1") {cout << "Triangulation is a location technique that uses three base points. Use the stick with strings attached, the map, and the expo marker." << endl; continue;}
+        if (final == "hint2") {cout << "Each puzzle was located on a specific color. Retrace your steps!" << endl; continue;}
+        if (final == "hint3") {cout << "Use the three differently sized strings to draw circles. Put the stick on the location of the puzzle you completed and the marker in each of the loops. The colors of the loops correspond to each location." << endl << "With the stick on each symbol and the expo marker in the symbol's corresponding color loop, draw arcs around the map." << endl << "The group will be located in the region where all arcs intersect." << endl; continue;}
+        if (final == "solution") {cout << "The lost group's location is: bluetriangle" << endl; continue;}
+        if (final != answer4) {cout << "Incorrect" << endl;}
+    }
+    while (final != answer4);
+    cout << endl;
+    cout << "You did it, Rangers! The lost group has been found at the blue triangle." << endl;
+    cout << "Prepare for E-Vac!" << endl;
+    cout << endl;
+
+
+    return 0;
+}
