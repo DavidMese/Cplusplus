@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <string>
+
+int x;
+using namespace std;
+
+string encry(string code);
+string decry(string code);
+
+
+int main() {
+    string code;
+    srand(x);
+    string type;
+    string encrypt = "encrypt";
+    string decrypt = "decrypt";
+
+    cout << "Enter a code word in capital letters." << endl;
+    cin >> code;
+    cout << "Would you like to [encrypt] or [decrypt] the code word?" << endl;
+    do {cin >> type;
+        if (type == encrypt) {break;}
+        if (type == decrypt) {break;}
+        cout << "Invalid command" << endl;}
+    while (type != encrypt || type != decrypt);
+    cout << "Enter the cypher key (an integer)." << endl;
+    cin >> x;
+    if (type == encrypt) {cout << "Encrypted word is: " << encry(code) << ".";}
+    if (type == decrypt) {cout << "Decrypted word is: " << decry(code) << ".";}
+    cout << endl;
+
+    return 0;
+}
+
+string encry(string code)
+{
+    srand(x);
+    string temp1;
+    for (int i = 0; i < code.length(); i++)
+    {
+        temp1 += char(((int(code[i] - 65) + rand())%26) + 65);
+    }
+    return temp1;
+}
+string decry(string code)
+{
+    srand(x);
+    string temp2;
+    for (int i = 0; i < code.length(); i++)
+    {
+        temp2 += char((((int(code[i] - 65) - rand()%26)+26)%26) + 65);
+    }
+    return temp2;
+}
