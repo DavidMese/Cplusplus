@@ -1,0 +1,127 @@
+include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <ctime>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <cstdio>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+using namespace std;
+
+struct CarRecords{                                             //creates the structure for the data records we will hold
+    string make;
+    string model;
+    string year;
+    string color;
+};
+void insertArray(CarRecords RecordArray1[10]){            //a function used to input the records from the initial text file
+    ifstream InitialRecords;                                                            //creates a readable file name
+    InitialRecords.open("C:\\Users\\david\\CLionProjects\\EECE2160HW2\\CarRecords.txt");    //assigns the file to the text file
+    if (!InitialRecords){cout << "Unable"<< endl;}                               //checks if the file was opened successfully
+    string line;                                            //creates a limit for the getline to traverse the file
+    int i = 0;                                              //initializes a counting variable to travel the array
+    while (getline(InitialRecords, line)){          //goes through each line of the text, imputing the txt data into the respective location in the structured array
+        InitialRecords >> RecordArray1[i].make;
+        InitialRecords >> RecordArray1[i].model;
+        InitialRecords >> RecordArray1[i].year;
+        InitialRecords >> RecordArray1[i].color;
+        i++;                                                //increases the variable to increment through the array
+    }
+    InitialRecords.close();                             //closes the txt file
+    return;
+}
+void printCarsArray(CarRecords RecordArray1[10]){       //a function to print the record array
+    for (int i=0;i<10;i++){                             //a for loop to print each structure element of each array individually
+        cout << RecordArray1[i].make << " " << RecordArray1[i].model << " " << RecordArray1[i].year << " " << RecordArray1[i].color << endl;
+    }
+    return;
+}
+void sortCarsByMake(CarRecords RecordArray1[10]){        //a function to sort the arrays by make
+    bool swapped;                                           //creates a variable that will serve as a parameter in the loop
+    do{
+        swapped = false;                                    //initializes the bool variable to a set parameter of false
+        for (int i =0; i<9; i++){                           //Iterates through each record in the array
+            if(RecordArray1[i].make[0] > RecordArray1[i+1].make[0]){    //checks the condition of whether current letter (in make) is 'larger' on the ASCII table
+                swap(RecordArray1[i],RecordArray1[i+1]);        //if above is true, swaps entire line in alphabetical order (of make)
+                swapped=true;                                           //sets the bool equal to true
+            }
+        }
+    }
+    while (swapped);
+    for (int i =0; i<9; i++){
+        if (RecordArray1[i].make[0] == RecordArray1[i+1].make[0]) {
+            if (RecordArray1[i].model[0] > RecordArray1[i + 1].model[0]) {         //sorts in alphabetical order of model, if make is the same
+                swap(RecordArray1[i],RecordArray1[i + 1]);        //if above is true, swaps entire line in alphabetical order (of model)
+            }
+        }
+    }
+    return;
+}
+void printDuplicates(CarRecords RecordArray1[10]){                  //a function to print the duplicates in the sorted array
+    int howMany;                                                    //counter for how many duplicates there are
+    for (int i = 0; i<9; i++){                                      //loop to cycle through each element up until the penultimate
+        howMany = 1;                                                //sets the howMany counter to one at the beginning of every loop
+        if (RecordArray1[i].make == RecordArray1[i+1].make && RecordArray1[i].model == RecordArray1[i+1].model && RecordArray1[i].year == RecordArray1[i+1].year && RecordArray1[i].color == RecordArray1[i+1].color){      //if the structured elements are equal, trigger bellow
+            howMany++;                                               //adds one to the duplicate counter
+            cout << "There are " << howMany << " copies of: " << RecordArray1[i].make << " " << RecordArray1[i].model << " " << RecordArray1[i].year << " "<< RecordArray1[i].color << endl;    //display the amount of repetitions and line contents
+        }
+    }
+    return;
+}
+void saveCarsInFile(CarRecords RecordArray1[10]){           //a function to save the records array to a new txt file
+    ofstream SortedRecords;                                 //initializes a writeable file called 'SortedRecords'
+    SortedRecords.open ("SortedRecords.txt");           //creates and opens a new named txt file
+    for (int i=0;i<10;i++){                             //a for loop to print each structure element of each array individually
+        SortedRecords << RecordArray1[i].make << " " << RecordArray1[i].model << " " << RecordArray1[i].year << " " << RecordArray1[i].color << endl;
+    }
+    SortedRecords.close();              //closes the created/written file
+    return;
+}
+
+int main() {
+    CarRecords RecordArray[10];                                     //initializes an array of 10 types of the structure CarRecords
+    int userOption;                                                 //initializes a variable to hold the user's input
+    do {                                                                //creates a loop for the main menu options until the program is terminated
+        cout << endl << "Main Menu: Select an option" << endl;              //displays the main menu options
+        cout << "1. Insert Car Records into an array" << endl;
+        cout << "2. Print the car record array" << endl;
+        cout << "3. Sort cars by make" << endl;
+        cout << "4. Print duplicate records" << endl;
+        cout << "5. Save the sorted car records into a file" << endl;
+        cout << "6. Exit" << endl;
+        cin >> userOption;                                                      //takes in the user's choice as an input
+        cout << endl;
+        switch(userOption){                                                    //enacts the proper case depending on the user's input (calls the respective function)
+            case 1:
+                cout << "You have chosen to import the car records" << endl;
+                insertArray(RecordArray);
+                break;
+            case 2:
+                cout << "You have chosen to print the car records" << endl;
+                printCarsArray(RecordArray);
+                break;
+            case 3:
+                cout << "You have chosen to sort the car records by make" << endl;
+                sortCarsByMake(RecordArray);
+                break;
+            case 4:
+                cout << "You have chosen to print the duplicate records" << endl;
+                printDuplicates(RecordArray);
+                break;
+            case 5:
+                cout << "You have chosen to export the sorted records into a file" << endl;
+                saveCarsInFile(RecordArray);
+                break;
+            case 6:
+                cout << "You have exited the program!" << endl;
+                break;
+            default:
+                cout << "Invalid Option! Choose again." << endl;
+        }
+    }
+    while (userOption != 6);
+    return 0;
+}
