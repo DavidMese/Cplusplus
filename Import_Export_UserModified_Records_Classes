@@ -1,0 +1,157 @@
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <ctime>
+#include <cstring>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+class Car{                                                                      //creates a class for the type car
+private:                                                                       //assigns private attributes
+    string make;
+    string model;
+    string year;
+    string color;
+public:                                                                        //creates public functions to alter private attributes
+    Car(){}                                                                     //constructor sets the initial default values
+    void setFields(string mk, string md, string yr, string cl){                 //a function to set the fields
+        make = mk;
+        model = md;
+        year = yr;
+        color = cl;
+    }
+    string getMake(){                                                           //returns the desired attributes
+        return make;
+    }
+    string getModel(){
+        return model;
+    }
+    string getYear(){
+        return year;
+    }
+    string getColor(){
+        return color;
+    }
+};
+class CarRecords{                                                                  //creates a class for the whole record list
+private:                                                                          //assigns private attributes to the record
+    int arraySize;
+    ifstream InitialRecords;                                                       //creates a streamed file
+    Car *cars;                                                                     //creates a dynamic array for the desired size
+public:                                                                            //public functions for the user to utilize from the main menu
+    CarRecords(int size){                                                          //this function is used to construct the list from the imported file
+        arraySize = size;
+        InitialRecords.open("CarRecords.txt");
+        if (!InitialRecords){cout << "Unable to open file" << endl;}                //checks if the file was opened successfully
+        cars = new Car[size];                                                       //creates a new array of the desired size
+        int hopper = 0;
+        string line;
+        while(getline(InitialRecords, line) && hopper<size){                //goes through each line of the text, imputing the txt data into the respective location in the structured array
+            string tempMake;                                                        //each attribute is temporarily initialized
+            InitialRecords >> tempMake;                                             //then imported from the file
+            string tempModel;
+            InitialRecords >> tempModel;
+            string tempYear;
+            InitialRecords >> tempYear;
+            string tempColor;
+            InitialRecords >> tempColor;
+            cars[hopper].setFields(tempMake, tempModel, tempYear, tempColor);       //each attribute is then sent to the setFields function for the appropriate element
+            hopper++;                                                               //the element index is incremented by one
+        }
+    }
+    ~CarRecords(){}
+    void printCarRecords(){                                                        // a function to print each element in the records, printing each attribute individually
+        for(int i = 0; i<arraySize; i++){
+            cout << cars[i].getMake() << " " << cars[i].getModel() << " " << cars[i].getYear() << " " << cars[i].getColor() << endl;
+        }
+    }
+    void sort_cars_by_make(){                                                       //a function to sort the records by make alphabetically
+        bool swapped;                                                               //creates a variable that will serve as a parameter in the loop
+        do{
+            swapped = false;                                                        //initializes the bool variable to a set parameter of false
+            for (int i =0; i<(arraySize-1); i++){                                   //Iterates through each record in the array
+                if(cars[i].getMake()[0] > cars[i+1].getMake()[0]){                  //checks the condition of whether current letter (in make) is 'larger' on the ASCII table
+                    swap(cars[i],cars[i+1]);                                //if above is true, swaps entire line in alphabetical order (of make)
+                    swapped=true;                                                   //sets the bool equal to true
+                }
+            }
+        }
+        while (swapped);
+        for (int i =0; i<(arraySize-1); i++){
+            if (cars[i].getMake()[0] == cars[i+1].getMake()[0]) {
+                if (cars[i].getModel()[0] > cars[i + 1].getModel()[0]) {             //sorts in alphabetical order of model, if make is the same
+                    swap(cars[i],cars[i + 1]);                               //if above is true, swaps entire line in alphabetical order (of model)
+                }
+            }
+        }
+    }
+    void sort_cars_by_year(){                                                       //a function to sort the car records by year
+        bool swapped;                                                               //creates a variable that will serve as a parameter in the loop
+        do{
+            swapped = false;                                                        //initializes the bool variable to a set parameter of false
+            for (int i =0; i<(arraySize-1); i++){                                   //Iterates through each record in the array
+                if(cars[i].getYear() < cars[i+1].getYear()){                        //checks the condition of whether the current element's year is older than the next element
+                    swap(cars[i],cars[i+1]);                                //if above is true, swaps entire line in increasing order (of year)
+                    swapped=true;                                                   //sets the bool equal to true
+                }
+            }
+        }
+        while (swapped);
+    }
+    void print_duplicates(){
+        int howMany;                                                    //counter for how many duplicates there are
+        for (int i = 0; i<(arraySize-1); i++){                                      //loop to cycle through each element up until the penultimate
+            howMany = 1;                                                //sets the howMany counter to one at the beginning of every loop
+            if (cars[i].getModel() == cars[i+1].getModel() && cars[i].getMake() == cars[i+1].getMake() && cars[i].getYear() == cars[i+1].getYear() && cars[i].getColor() == cars[i+1].getColor()){      //if the structured elements are equal, trigger bellow
+                howMany++;                                               //adds one to the duplicate counter
+                cout << "There are " << howMany << " copies of: " << cars[i].getMake() << " " << cars[i].getModel() << " " << cars[i].getYear() << " " << cars[i].getColor() << endl;    //display the amount of repetitions and line contents
+            }
+        }
+    }
+};
+int main() {
+    int size;
+    cout << "How many records would you like to import" << endl;
+    cin >> size;
+    CarRecords *cr = new CarRecords(size);
+
+    int userOption;                                                             //initializes a variable to hold the user's input
+    do {                                                                        //creates a loop for the main menu options until the program is terminated
+        cout << endl << "Main Menu: Select an option" << endl;                  //displays the main menu options
+        cout << "1. Print the car record list" << endl;
+        cout << "2. Sort cars by make" << endl;
+        cout << "3. Sort cars by year" << endl;
+        cout << "4. Print duplicate records" << endl;
+        cout << "5. Exit" << endl;
+        cin >> userOption;                                                     //takes in the user's choice as an input
+        cout << endl;
+        switch(userOption){                                                    //enacts the proper case depending on the user's input (calls the respective function)
+            case 1:
+                cout << "You have chosen to print the car records" << endl;
+                cr->printCarRecords();
+                break;
+            case 2:
+                cout << "You have chosen to sort the car records by make" << endl;
+                cr->sort_cars_by_make();
+                break;
+            case 3:
+                cout << "You have chosen to sort the car records by year" << endl;
+                cr->sort_cars_by_year();
+                break;
+            case 4:
+                cout << "You have chosen to print the duplicate records" << endl;
+                cr->print_duplicates();
+                break;
+            case 5:
+                cout << "You have exited the program!" << endl;
+                break;
+            default:
+                cout << "Invalid Option! Choose again." << endl;
+        }
+    }
+    while (userOption != 5);
+    delete cr;                                                              //deletes and free the memory allocated to the car records
+    return 0;
+}
