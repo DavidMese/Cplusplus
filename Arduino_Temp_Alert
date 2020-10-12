@@ -1,0 +1,68 @@
+//David Meseonznik
+//Pseudocode
+//initialize the pins for the lcd display
+//create integers for voltage reading, degrees celcius & fahrenheit, location of constrast pin, contrast level, threshold integer, buzzer location
+//setup
+//create dimensions for lcd screen
+//analogwrite the loation and magnitude of the constrast for lcd
+//clear the lcd display
+//initialize the location of the buzzer location and set it to output
+//loop
+//clear the lcd screen
+//set the constrast of the lcd (at the beginning of everyloop to reclear the the screen if threshhold was reached, as there is a glitch in setting contrast to act digital when buzzer is triggered)
+//convert the reading of the tmp36 to a voltage then subsequently convert to celcius, then fehrenheit
+//convert analog reading of potentiometer to voltage, then fehrenheit
+//if the temperature is below threshold, no tone
+//if temperature is above threshold, create a twotone buzer noise
+//lcd print the reading from temp36 in fehrenheit degrees
+//lcd print the threshold degrees
+
+//REFERENCE CODE FROM SIK_GUIDE MASTER CODE, noted as (R) near lines sourced.
+//LCD contrast from arduino IDE sourced from assignment sheet
+#include <LiquidCrystal.h>                                                                            //include lcd library
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);                                                              //assign PWM pins for the lcd display
+
+float voltage = 0;                                                                                    //initialize float value for voltage
+float degreesC = 0;                                                                                   //initialize float value for celcius degrees                 
+float degreesF = 0;                                                                                   //initialize float value for fehrenheit degrees                       
+int contrast_pin = 3;                                                                                 //initialize integer (space) for constrast pin location
+float contrast_level = 105;                                                                           //initialize float value for contrast level for lcd
+float Thresh = 0;                                                                                     //initialize float value for threshold (from potentiometer)
+int Buzzer = 6;                                                                                       //initialize integer (space) for buzzer location
+
+void setup() {
+  
+  lcd.begin(16, 2);                                                                                   //creates dimensions for lcd display
+  analogWrite(contrast_pin, contrast_level);                                                          //adjusts the constrast of the lcd according to global variables
+  lcd.clear();                                                                                        //clears the lcd display
+  pinMode(Buzzer, OUTPUT);                                                                            //sets the buzzer location as an output
+}
+void loop() {    
+  lcd.clear();                                                                                        //clears the display
+  analogWrite(contrast_pin, contrast_level);                                                          //set the constrast of the lcd (at the beginning of everyloop to reclear the the screen if threshhold was reached, as there is a glitch in setting contrast to act digital when buzzer is triggered)                           
+  voltage = analogRead(A5) * 0.00488759;                                                              //converts tmp36 reading to a voltage value (R)
+  degreesC = (voltage - 0.5) * 100.0;                                                                 //converts above voltage to a celcius degree (R)
+  degreesF = degreesC * (9.0 / 5.0) + 32.0;                                                           //converts above celcius degree to fehrenheit (R)
+  Thresh = ( ( ( (analogRead(A1)* 0.00488759)-.5) * 100 * (9.0/5.0) ) + 32.0);                        //converts the potentiometer reading to a degree in fehrenheit (partialy R for conversion factors)
+     
+
+  if (degreesF < Thresh) {noTone(Buzzer);}                                                            //no tone from buzzer if the readed temperature is below the threshold
+  else if (degreesF > Thresh)                                                                         //creates a twotone noise from buzzer if readed temperature is above threshold
+  {
+  tone(Buzzer, 241);
+  delay(200);
+  noTone(Buzzer);
+  tone(Buzzer, 392);
+  delay(100);
+  }
+  
+  lcd.setCursor(0, 0);                                                                               //sets cursor to the first line
+  lcd.print("Degrees F: ");                                                                          //write a static message to lcd
+  lcd.print(degreesF);                                                                               //displays the  readed temperature 
+  
+  lcd.setCursor(0, 1);                                                                               //sets cursor to the second line                    
+  lcd.print("Threshold: ");                                                                          //write a static message to lcd                 
+  lcd.print(Thresh);                                                                                 //displays the threshold reading
+  
+  delay(1000);                              
+}
